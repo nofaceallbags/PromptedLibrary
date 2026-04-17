@@ -1,9 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
-import * as pdfjsLib from 'pdfjs-dist'
 import { X, FileText, Plus, Star } from 'lucide-react'
 import { Prompt } from '../types'
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`
 
 interface AddPromptModalProps {
   categories: string[]
@@ -40,6 +37,10 @@ export default function AddPromptModal({
     setPdfLoading(true)
     setPdfMsg('')
     try {
+      // Dynamic import so pdfjs never blocks app startup
+      const pdfjsLib = await import('pdfjs-dist')
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`
+
       const buffer = await file.arrayBuffer()
       const pdf = await pdfjsLib.getDocument({ data: buffer }).promise
       let text = ''
@@ -53,7 +54,8 @@ export default function AddPromptModal({
       const cleaned = text.replace(/\s+/g, ' ').trim()
       setContent(prev => (prev ? prev + '\n\n' + cleaned : cleaned))
       setPdfMsg(`Extracted ${cleaned.length.toLocaleString()} characters from "${file.name}"`)
-    } catch {
+    } catch (err) {
+      console.error('PDF error:', err)
       setPdfMsg('Could not read this PDF. Try another file.')
     } finally {
       setPdfLoading(false)
@@ -113,7 +115,6 @@ export default function AddPromptModal({
         </div>
 
         <div className="modal-body">
-          {/* Title */}
           <div className="form-group">
             <label className="form-label">Prompt Title *</label>
             <input
@@ -125,7 +126,6 @@ export default function AddPromptModal({
             />
           </div>
 
-          {/* Category */}
           <div className="form-group">
             <label className="form-label">Category</label>
             {!newCatMode ? (
@@ -166,7 +166,6 @@ export default function AddPromptModal({
             )}
           </div>
 
-          {/* PDF Upload */}
           <div className="form-group">
             <label className="form-label">Upload PDF <span className="label-optional">(optional)</span></label>
             <div
@@ -203,7 +202,6 @@ export default function AddPromptModal({
             )}
           </div>
 
-          {/* Content */}
           <div className="form-group">
             <label className="form-label">
               Prompt Content *

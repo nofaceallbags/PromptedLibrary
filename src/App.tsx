@@ -7,6 +7,7 @@ import AddPromptModal from './components/AddPromptModal'
 
 const STORAGE_KEY = 'prompted-library'
 const DEFAULT_CATEGORIES = ['Personality', 'Voice & Tone', 'Backstory', 'Appearance', 'UGC Scripts', 'Social Captions', 'Replies & DMs']
+const LEGACY_CATEGORIES = ['AI Avatars', 'Social Media', 'Business', 'Creative Writing', 'General']
 
 function load<T>(key: string, fallback: T): T {
   try {
@@ -17,13 +18,18 @@ function load<T>(key: string, fallback: T): T {
   }
 }
 
+function loadCategories(): string[] {
+  const saved = load(`${STORAGE_KEY}-categories`, DEFAULT_CATEGORIES)
+  // Migrate: if saved categories are exactly the old defaults, replace with new ones
+  if (JSON.stringify(saved) === JSON.stringify(LEGACY_CATEGORIES)) return DEFAULT_CATEGORIES
+  return saved
+}
+
 export default function App() {
   const [prompts, setPrompts] = useState<Prompt[]>(() =>
     load(`${STORAGE_KEY}-prompts`, [])
   )
-  const [categories, setCategories] = useState<string[]>(() =>
-    load(`${STORAGE_KEY}-categories`, DEFAULT_CATEGORIES)
-  )
+  const [categories, setCategories] = useState<string[]>(loadCategories)
   const [filter, setFilter] = useState('all')
   const [search, setSearch] = useState('')
   const [showModal, setShowModal] = useState(false)

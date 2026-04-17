@@ -6,7 +6,7 @@ import PromptCard from './components/PromptCard'
 import AddPromptModal from './components/AddPromptModal'
 
 const STORAGE_KEY = 'prompted-library'
-const DEFAULT_CATEGORIES = ['AI Avatars', 'Social Media', 'Business', 'Creative Writing', 'General']
+const DEFAULT_CATEGORIES = ['Personality', 'Voice & Tone', 'Backstory', 'Appearance', 'UGC Scripts', 'Social Captions', 'Replies & DMs']
 
 function load<T>(key: string, fallback: T): T {
   try {
@@ -40,6 +40,14 @@ export default function App() {
   const addPrompt = (data: Omit<Prompt, 'id' | 'createdAt' | 'updatedAt'>) => {
     const now = new Date().toISOString()
     setPrompts(prev => [{ ...data, id: crypto.randomUUID(), createdAt: now, updatedAt: now }, ...prev])
+  }
+
+  const saveMultiple = (items: Array<Omit<Prompt, 'id' | 'createdAt' | 'updatedAt'>>) => {
+    const now = new Date().toISOString()
+    const newPrompts = items.map(data => ({ ...data, id: crypto.randomUUID(), createdAt: now, updatedAt: now }))
+    setPrompts(prev => [...newPrompts, ...prev])
+    setShowModal(false)
+    setEditingPrompt(null)
   }
 
   const updatePrompt = (id: string, data: Omit<Prompt, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -145,17 +153,17 @@ export default function App() {
               </div>
               <h3 className="empty-title">
                 {search
-                  ? 'No results found'
+                  ? 'No prompts found'
                   : filter === 'starred'
                   ? 'No starred prompts yet'
-                  : 'Your vault is empty!'}
+                  : 'No prompts yet, bestie!'}
               </h3>
               <p className="empty-sub">
                 {search
                   ? `Nothing matched "${search}". Try different words.`
                   : filter === 'starred'
-                  ? 'Hit the ⭐ on any prompt to pin your favorites here.'
-                  : 'Add your first prompt — type it, paste it, or drop a PDF!'}
+                  ? 'Star the prompts you use most so they\'re always one click away.'
+                  : 'Add your first AI twin prompt — type it, paste it, or upload a PDF and we\'ll split each prompt individually.'}
               </p>
               {!search && filter === 'all' && (
                 <button className="btn-primary empty-cta" onClick={openAdd}>
@@ -184,6 +192,7 @@ export default function App() {
           categories={categories}
           editingPrompt={editingPrompt}
           onSave={handleSave}
+          onSaveMultiple={saveMultiple}
           onClose={closeModal}
           onAddCategory={addCategory}
         />

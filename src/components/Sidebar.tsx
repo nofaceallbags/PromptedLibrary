@@ -31,7 +31,7 @@ export default function Sidebar({ categories, prompts, filter, onFilterChange, o
       <div className="sidebar-logo">
         <div className="logo-icon"><Zap size={20} fill="currentColor" /></div>
         <h1><span className="logo-red">PROMPTED</span><br /><span className="logo-white">LIBRARY</span></h1>
-        <p className="logo-tagline">Your AI Prompt Vault</p>
+        <p className="logo-tagline">Build Your AI Twin</p>
       </div>
 
       <div className="sidebar-divider" />

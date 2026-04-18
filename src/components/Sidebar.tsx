@@ -31,7 +31,7 @@ export default function Sidebar({ categories, prompts, filter, onFilterChange, o
       <div className="sidebar-logo">
         <div className="logo-icon"><Zap size={20} fill="currentColor" /></div>
         <h1><span className="logo-red">PROMPTED</span><br /><span className="logo-white">LIBRARY</span></h1>
-        <p className="logo-tagline">Build Your AI Twin</p>
+        <p className="logo-tagline">Your AI Prompt Vault!</p>
       </div>
 
       <div className="sidebar-divider" />
@@ -55,7 +55,7 @@ export default function Sidebar({ categories, prompts, filter, onFilterChange, o
         >
           <span className="nav-item-left">
             <Star size={15} fill={filter === 'starred' ? 'currentColor' : 'none'} />
-            Starred
+            Favorites
           </span>
           <span className="nav-badge">{starredCount}</span>
         </button>
@@ -79,7 +79,7 @@ export default function Sidebar({ categories, prompts, filter, onFilterChange, o
           <div className="cat-add-form">
             <input
               className="cat-add-input"
-              placeholder="New category..."
+              placeholder="New folder name..."
               value={newCatName}
               onChange={e => setNewCatName(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleAddCat()}
@@ -118,7 +118,7 @@ export default function Sidebar({ categories, prompts, filter, onFilterChange, o
 
       <div className="sidebar-footer">
         <p className="sidebar-footer-text">
-          {prompts.length} prompt{prompts.length !== 1 ? 's' : ''} saved
+          You have {prompts.length} prompt{prompts.length !== 1 ? 's' : ''}!
         </p>
       </div>
     </aside>

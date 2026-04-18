@@ -63,7 +63,7 @@ export default function App() {
   }
 
   const deletePrompt = (id: string) => {
-    if (confirm('Delete this prompt? This cannot be undone.')) {
+    if (confirm('Are you sure? This prompt will be gone forever!')) {
       setPrompts(prev => prev.filter(p => p.id !== id))
     }
   }
@@ -107,7 +107,7 @@ export default function App() {
 
   const filterLabel =
     filter === 'all' ? 'All Prompts' :
-    filter === 'starred' ? 'Starred' :
+    filter === 'starred' ? 'My Favorites' :
     filter
 
   const isEmpty = filtered.length === 0
@@ -129,7 +129,7 @@ export default function App() {
             <Search size={16} className="search-icon-el" />
             <input
               className="search-input"
-              placeholder="Search prompts..."
+              placeholder="Find a prompt..."
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
@@ -159,17 +159,17 @@ export default function App() {
               </div>
               <h3 className="empty-title">
                 {search
-                  ? 'No prompts found'
+                  ? 'Nothing found!'
                   : filter === 'starred'
-                  ? 'No starred prompts yet'
-                  : 'No prompts yet, bestie!'}
+                  ? 'No favorites yet!'
+                  : 'Nothing here yet!'}
               </h3>
               <p className="empty-sub">
                 {search
-                  ? `Nothing matched "${search}". Try different words.`
+                  ? `We couldn't find "${search}". Try different words!`
                   : filter === 'starred'
-                  ? 'Star the prompts you use most so they\'re always one click away.'
-                  : 'Add your first AI twin prompt — type it, paste it, or upload a PDF and we\'ll split each prompt individually.'}
+                  ? 'Click the ⭐ star on any prompt to save it here!'
+                  : 'Add your first prompt! Type it, paste it, or drop in a PDF file!'}
               </p>
               {!search && filter === 'all' && (
                 <button className="btn-primary empty-cta" onClick={openAdd}>

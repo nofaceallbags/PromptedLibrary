@@ -39,7 +39,7 @@ export default function PromptCard({ prompt, onToggleStar, onDelete, onEdit }: P
         <button
           className={`star-btn ${prompt.starred ? 'star-btn--on' : ''}`}
           onClick={e => { e.stopPropagation(); onToggleStar(prompt.id) }}
-          title={prompt.starred ? 'Unstar' : 'Star this prompt'}
+          title={prompt.starred ? 'Remove from favorites' : 'Add to favorites'}
         >
           <Star size={18} fill={prompt.starred ? 'currentColor' : 'none'} />
         </button>
@@ -52,20 +52,20 @@ export default function PromptCard({ prompt, onToggleStar, onDelete, onEdit }: P
       <div className="card-footer">
         <div className="card-meta">
           <span className="card-date">{formatDate(prompt.updatedAt)}</span>
-          <span className="card-chars">{prompt.content.length} chars</span>
+          <span className="card-chars">{prompt.content.length} letters</span>
         </div>
         <div className="card-actions">
           <button
             className={`action-btn ${copied ? 'action-btn--success' : ''}`}
             onClick={handleCopy}
-            title="Copy to clipboard"
+            title="Copy it!"
           >
             {copied ? <Check size={14} /> : <Copy size={14} />}
           </button>
           <button
             className="action-btn action-btn--danger"
             onClick={e => { e.stopPropagation(); onDelete(prompt.id) }}
-            title="Delete prompt"
+            title="Delete this"
           >
             <Trash2 size={14} />
           </button>
